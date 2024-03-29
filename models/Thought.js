@@ -1,6 +1,7 @@
 const { Schema, model } = require('mongoose');
 const reactionSchema = require('./Reaction');
 
+// Define Thought schema
 const thoughtSchema = new Schema(
     {
       thoughtText: {
@@ -12,6 +13,7 @@ const thoughtSchema = new Schema(
       createdAt: {
         type: Date,
         default: Date.now,
+        // getter method to format timestamp
         get: createdAt => {
             return new Date(createdAt).toLocaleString();
         }
@@ -20,6 +22,7 @@ const thoughtSchema = new Schema(
         type: String,
         required: true,
       },
+      // nested documents created
       reactions: [reactionSchema],
     },
     {
@@ -29,6 +32,7 @@ const thoughtSchema = new Schema(
     }    
 );
 
+// Define virtual field reactionCount
 thoughtSchema.virtual('reactionCount').get(function() {
     return this.reactions.length;
 });

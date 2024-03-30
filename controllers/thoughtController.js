@@ -78,6 +78,9 @@ module.exports = {
         if (!thought) {
           return res.status(404).json({ message: 'No thought with that ID' });
         }
+
+        await User.updateMany({}, { $pull: { thoughts: thought._id } });
+        
         res.json({ message: 'Thought successfully deleted' });
        } catch (err) {
         console.log(err);

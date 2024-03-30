@@ -13,8 +13,7 @@ module.exports = {
       try {
         const users = await User.find()
           .select('-__v')
-          .populate('thoughts')
-          .populate('friends');
+          ;
           
         const userObj = {
             users,

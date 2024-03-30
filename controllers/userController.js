@@ -66,7 +66,7 @@ module.exports = {
         );
 
         if (!user) {
-          res.status(404).json({ message: 'No user with this ID' });
+          return res.status(404).json({ message: 'No user with this ID' });
         }
 
         res.json(user);

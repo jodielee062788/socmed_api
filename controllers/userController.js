@@ -1,4 +1,3 @@
-const { ObjectId } = require('mongoose').Types;
 const { User, Thought } = require('../models');
 
 // Aggregate function to get the total number of users
@@ -89,19 +88,17 @@ module.exports = {
           return res.status(404).json({ message: 'No such user exists' });
         }
 
-        const thought = await Thought.findOneAndUpdate(
-          { users: req.params.userId },
-          { $pull: { users: req.params.userId } },
-          { new: true }
-        );
+        // Find thoughts associated with the user
+      const thoughts = await Thought.find({ username: user.username });
 
-        if (!thought) {
-          return res.status(404).json({
-            message: 'User deleted, but no thoughts found',
-          });
-        }
-
-        res.json({ message: 'User successfully deleted' });
+      if (thoughts.length > 0) {
+        // If thoughts are found, delete them
+        await Thought.deleteMany({ username: user.username });
+        res.json({ message: 'User and associated thoughts successfully deleted' });
+      } else {
+        // If no thoughts are found, return a message indicating so
+        res.json({ message: 'User successfully deleted. No associated thoughts found.' });
+      }
       } catch (err) {
         console.log(err);
         res.status(500).json(err);

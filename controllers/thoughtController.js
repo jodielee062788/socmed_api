@@ -94,11 +94,11 @@ module.exports = {
           { runValidators: true, new: true } 
         );
 
-        if(!thought) {
+        if (!thought) {
           return res.status(404).json({ message: 'No thought found with this ID' });
         }
 
-        res.json(thought);
+        res.json({ message: 'Reaction added successfully', thought });
       } catch (err) {
         res.status(500).json(err);
       }
@@ -117,7 +117,7 @@ module.exports = {
           return res.status(404).json({ message: 'No thought found with that ID' });
         }
 
-        res.json(thought);
+        res.json({ message: 'Reaction removed successfully', thought });
       } catch (err) {
         res.status(500).json(err);
       }

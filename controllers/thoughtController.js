@@ -110,16 +110,11 @@ module.exports = {
     // Delete a rection based on reactionId
     async deleteReaction(req, res) {
       try {
-
-        console.log('thoughtId:', req.params.thoughtId);
-        console.log('reactionId:', req.params.reactionId);
         const thought = await Thought.findOneAndUpdate(
           { _id: req.params.thoughtId },
           { $pull: { reactions: { _id: req.params.reactionId } } },
           { runValidators: true, new: true }
         );
-        
-        console.log('Updated thought:', thought);
         
         if(!thought) {
           return res.status(404).json({ message: 'No thought found with that ID' });

@@ -12,8 +12,10 @@ module.exports = {
     // Get all users
     async getUsers(req, res) {
       try {
-        const users = await User.find();
-
+        const users = await User.find()
+          .populate('thoughts')
+          .populate('friends');
+          
         const userObj = {
             users,
             headCount: await headCount(),
@@ -31,7 +33,9 @@ module.exports = {
         try {
           // Find a user by their _id and exclude the '__v' field from the query result
           const user = await User.findOne({ _id: req.params.userId })
-            .select('-__v');
+            .select('-__v')
+            .populate('thoughts')
+            .populate('friends');
 
           if (!user) {
             return res.status(404).json({ message: 'No user with that ID' })
